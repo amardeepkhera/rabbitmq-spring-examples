@@ -12,10 +12,10 @@ public class Subscriber {
     @RabbitListener(containerFactory = "simpleMessageListenerContainer",
                     bindings = {
                                     @QueueBinding(value = @Queue("countriesInNorthernHemisphere"),
-                                                    key = "*.northern_hemisphere",
+                                                    key = "*.country.northern_hemisphere",
                                                     exchange = @Exchange(value = "spring-boot-rabbitmq-examples.topic", type = ExchangeTypes.TOPIC)),
                                     @QueueBinding(value = @Queue("countriesInNorthernHemisphere"),
-                                                    key = "*.both",
+                                                    key = "*.country.both",
                                                     exchange = @Exchange(value = "spring-boot-rabbitmq-examples.topic", type = ExchangeTypes.TOPIC))})
     public void subscribeToCountriesInNorthernHemisphereQueue(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + sampleRequestMessage + " from " + message.getMessageProperties().getConsumerQueue());
@@ -25,10 +25,10 @@ public class Subscriber {
     @RabbitListener(containerFactory = "simpleMessageListenerContainer",
                     bindings = {
                                     @QueueBinding(value = @Queue("countriesInSouthernHemisphere"),
-                                                    key = "*.southern_hemisphere",
+                                                    key = "*.country.southern_hemisphere",
                                                     exchange = @Exchange(value = "spring-boot-rabbitmq-examples.topic", type = ExchangeTypes.TOPIC)),
                                     @QueueBinding(value = @Queue("countriesInSouthernHemisphere"),
-                                                    key = "*.both",
+                                                    key = "*.country.both",
                                                     exchange = @Exchange(value = "spring-boot-rabbitmq-examples.topic", type = ExchangeTypes.TOPIC))})
     public void subscribeToCountriesInSouthernHemisphereQueue(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + sampleRequestMessage + " from " + message.getMessageProperties().getConsumerQueue());
