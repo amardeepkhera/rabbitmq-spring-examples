@@ -1,4 +1,4 @@
-package in.rabbitmq.direct;
+package in.rabbitmq.exchange.amqp_default;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
@@ -14,13 +14,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@Configuration("directConfig")
-@Profile("direct")
+@Configuration("amqp_defaultConfig")
+@Profile("amqp_default")
 @EnableScheduling
 @EnableRabbit
-@ComponentScan(basePackages = {"in.rabbitmq.direct"})
+@ComponentScan(basePackages = {"in.rabbitmq.exchange.amqp_default"})
 public class Config {
 
+    @Bean
+    public Publisher publisher() {
+        return new Publisher();
+    }
 
     @Bean
     public Queue requestQueueForConvertAndSend() {
@@ -61,6 +65,4 @@ public class Config {
         template.setMessageConverter(jsonMessageConverter());
         return template;
     }
-
-
 }

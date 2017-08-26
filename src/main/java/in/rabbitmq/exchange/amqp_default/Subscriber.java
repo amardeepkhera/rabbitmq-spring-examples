@@ -1,4 +1,4 @@
-package in.rabbitmq.direct;
+package in.rabbitmq.exchange.amqp_default;
 
 import in.rabbitmq.SampleRequestMessage;
 import in.rabbitmq.SampleResponseMessage;

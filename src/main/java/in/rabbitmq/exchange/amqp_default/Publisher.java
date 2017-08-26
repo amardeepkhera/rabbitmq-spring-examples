@@ -1,4 +1,4 @@
-package in.rabbitmq.direct;
+package in.rabbitmq.exchange.amqp_default;
 
 import in.rabbitmq.SampleRequestMessage;
 import in.rabbitmq.SampleResponseMessage;
@@ -6,12 +6,10 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-@Component
 public class Publisher {
 
     private static SecureRandom SECURE_RANDOM;
