@@ -1,7 +1,6 @@
 package in.rabbitmq.exchange.fanout;
 
 import in.rabbitmq.SampleRequestMessage;
-import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,7 +28,7 @@ public class Publisher {
     @Scheduled(fixedDelay = 1000 * 1)
     public void publishToFanoutExchange() {
         SampleRequestMessage sampleRequestMessage = new SampleRequestMessage(String.valueOf(SECURE_RANDOM.nextInt()));
-        System.out.println("Sending out message on fanout exchange:" + sampleRequestMessage);
+        System.out.println("Sending out message on fanout directExchange:" + sampleRequestMessage);
         rabbitTemplate.convertAndSend("spring-boot-rabbitmq-examples.fanout", "", sampleRequestMessage);
     }
 

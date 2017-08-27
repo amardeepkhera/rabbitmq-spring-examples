@@ -1,4 +1,4 @@
-package in.rabbitmq.exchange.direct;
+package in.rabbitmq.exchange.headers;
 
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@Configuration("direct")
-@Profile("direct")
+@Configuration("headersConfig")
+@Profile("headers")
 @EnableScheduling
 @EnableRabbit
-@ComponentScan(basePackages = {"in.rabbitmq.exchange.direct"})
+@ComponentScan(basePackages = {"in.rabbitmq.exchange.headers"})
 public class Config {
 
     @Bean
@@ -26,10 +26,9 @@ public class Config {
     }
 
     @Bean
-    public SimpleRabbitListenerContainerFactory simpleMessageListenerContainerFactory(ConnectionFactory connectionFactory,
-                                                                                      SimpleRabbitListenerContainerFactoryConfigurer configurer) {
+    public SimpleRabbitListenerContainerFactory simpleMessageListenerContainer(ConnectionFactory connectionFactory,
+                                                                               SimpleRabbitListenerContainerFactoryConfigurer configurer) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-
         configurer.configure(factory, connectionFactory);
         return factory;
     }
@@ -46,10 +45,8 @@ public class Config {
         return template;
     }
 
-    
     @Bean
     public Subscriber subscriber() {
         return new Subscriber();
     }
-
 }

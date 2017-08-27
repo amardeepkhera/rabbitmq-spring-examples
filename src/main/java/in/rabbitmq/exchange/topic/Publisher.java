@@ -34,5 +34,4 @@ public class Publisher {
         rabbitTemplate.convertAndSend("spring-boot-rabbitmq-examples.topic", "indonesia.country.both", sampleRequestMessage);
     }
 
-
 }

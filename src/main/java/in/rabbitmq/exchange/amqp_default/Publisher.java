@@ -40,7 +40,10 @@ public class Publisher {
     public void publishUsingConvertSendAndReceive() {
         SampleRequestMessage sampleRequestMessage = new SampleRequestMessage(String.valueOf(SECURE_RANDOM.nextInt()));
         System.out.println("Sending out message from publishUsingConvertSendAndReceive:" + sampleRequestMessage);
-        SampleResponseMessage sampleResponseMessage = (SampleResponseMessage) rabbitTemplate.convertSendAndReceive(requestQueueForConvertSendAndReceive.getName(), sampleRequestMessage);
-        System.out.println("Received by publisher:" + this.toString() + sampleResponseMessage + " for request message " + sampleRequestMessage);
+        SampleResponseMessage sampleResponseMessage = (SampleResponseMessage) rabbitTemplate
+                        .convertSendAndReceive(requestQueueForConvertSendAndReceive.getName(), sampleRequestMessage);
+        System.out.println("Received by publisher:" + sampleResponseMessage + " for request message " + sampleRequestMessage);
     }
+
+
 }

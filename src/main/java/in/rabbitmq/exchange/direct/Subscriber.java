@@ -9,7 +9,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 public class Subscriber {
 
     @RabbitHandler
-    @RabbitListener(containerFactory = "simpleMessageListenerContainer",
+    @RabbitListener(containerFactory = "simpleMessageListenerContainerFactory",
                     bindings = {
                                     @QueueBinding(value = @Queue("queueBlack"),
                                                     key = "black",
@@ -20,7 +20,7 @@ public class Subscriber {
     }
 
     @RabbitHandler
-    @RabbitListener(containerFactory = "simpleMessageListenerContainer",
+    @RabbitListener(containerFactory = "simpleMessageListenerContainerFactory",
                     bindings = {
                                     @QueueBinding(value = @Queue("queueWhite"),
                                                     key = "white",
