@@ -12,6 +12,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,6 +28,13 @@ import java.util.concurrent.Executors;
 @EnableRabbit
 @ComponentScan(basePackages = {"in.rabbitmq.async_rpc"})
 public class Config {
+
+    @Value("${queue.reply}")
+    private String replyQueue;
+    @Value("${exchange.direct}")
+    private String directExchange;
+    @Value("${routingKey.reply}")
+    private String replyRoutingKey;
 
     @Bean
     public Publisher publisher() {
@@ -56,7 +64,7 @@ public class Config {
 
     @Bean
     public Queue replyQueueRPC() {
-        return new Queue("replyQueueRPC");
+        return new Queue(replyQueue);
     }
 
     @Bean
@@ -74,17 +82,17 @@ public class Config {
 
         return new AsyncRabbitTemplate(rabbitTemplate(connectionFactory),
                         rpcReplyMessageListenerContainer(connectionFactory),
-                        "spring-boot-rabbitmq-examples.async_rpc/rpc_reply");
+                        directExchange + "/" + replyRoutingKey);
     }
 
     @Bean
     public DirectExchange directExchange() {
-        return new DirectExchange("spring-boot-rabbitmq-examples.async_rpc");
+        return new DirectExchange(directExchange);
     }
 
     @Bean
     public Binding binding() {
-        return BindingBuilder.bind(replyQueueRPC()).to(directExchange()).with("rpc_reply");
+        return BindingBuilder.bind(replyQueueRPC()).to(directExchange()).with(replyRoutingKey);
     }
 
 

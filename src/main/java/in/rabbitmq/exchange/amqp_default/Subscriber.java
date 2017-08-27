@@ -15,7 +15,7 @@ public class Subscriber {
     private RabbitTemplate rabbitTemplate;
 
     @RabbitHandler
-    @RabbitListener(queues = {"requestQueueForConvertSendAndReceive"}, containerFactory = "simpleMessageListenerContainer")
+    @RabbitListener(queues = {"${queue.requestQueueForConvertSendAndReceive}"}, containerFactory = "simpleMessageListenerContainer")
     public void subscribeToConvertSendAndReceiveRequests(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println(message);
         System.out.println("Received by subscriber for subscribeToConvertSendAndReceiveRequests:" + sampleRequestMessage);
@@ -24,7 +24,7 @@ public class Subscriber {
     }
 
     @RabbitHandler
-    @RabbitListener(queues = {"requestQueueForConvertAndSend"}, containerFactory = "simpleMessageListenerContainer")
+    @RabbitListener(queues = {"${queue.requestQueueForConvertAndSend}"}, containerFactory = "simpleMessageListenerContainer")
     public void subscribeToConvertAndSendRequests(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received by subscriber for subscribeToConvertAndSendRequests:" + sampleRequestMessage);
     }

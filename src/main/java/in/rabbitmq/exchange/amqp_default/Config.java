@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,6 +22,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(basePackages = {"in.rabbitmq.exchange.amqp_default"})
 public class Config {
 
+    @Value("${queue.requestQueueForConvertSendAndReceive}")
+    private String requestQueueForConvertSendAndReceive;
+    @Value("${queue.requestQueueForConvertAndSend}")
+    private String requestQueueForConvertAndSend;
+
     @Bean
     public Publisher publisher() {
         return new Publisher();
@@ -28,12 +34,12 @@ public class Config {
 
     @Bean
     public Queue requestQueueForConvertAndSend() {
-        return new Queue("requestQueueForConvertAndSend");
+        return new Queue(requestQueueForConvertAndSend);
     }
 
     @Bean
     public Queue requestQueueForConvertSendAndReceive() {
-        return new Queue("requestQueueForConvertSendAndReceive");
+        return new Queue(requestQueueForConvertSendAndReceive);
     }
 
 

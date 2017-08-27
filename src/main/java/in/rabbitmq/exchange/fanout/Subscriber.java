@@ -11,10 +11,10 @@ public class Subscriber {
     @RabbitHandler
     @RabbitListener(containerFactory = "simpleMessageListenerContainer",
                     bindings = {
-                                    @QueueBinding(value = @Queue("queueA"),
-                                                    exchange = @Exchange(value = "spring-boot-rabbitmq-examples.fanout", type = ExchangeTypes.FANOUT)),
-                                    @QueueBinding(value = @Queue("queueB"),
-                                                    exchange = @Exchange(value = "spring-boot-rabbitmq-examples.fanout", type = ExchangeTypes.FANOUT))})
+                                    @QueueBinding(value = @Queue("${queue.A}"),
+                                                    exchange = @Exchange(value = "${exchange.fanout}", type = ExchangeTypes.FANOUT)),
+                                    @QueueBinding(value = @Queue("${queue.B}"),
+                                                    exchange = @Exchange(value = "${exchange.fanout}", type = ExchangeTypes.FANOUT))})
     public void subscribe(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + sampleRequestMessage + " from " + message.getMessageProperties().getConsumerQueue());
     }

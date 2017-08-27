@@ -11,9 +11,9 @@ public class Subscriber {
     @RabbitHandler
     @RabbitListener(containerFactory = "simpleMessageListenerContainerFactory",
                     bindings = {
-                                    @QueueBinding(value = @Queue("queueBlack"),
-                                                    key = "black",
-                                                    exchange = @Exchange(value = "spring-boot-rabbitmq-examples.direct", type = ExchangeTypes.DIRECT))
+                                    @QueueBinding(value = @Queue("${queue.black}"),
+                                                    key = "${routingKey.black}",
+                                                    exchange = @Exchange(value = "${exchange.direct}", type = ExchangeTypes.DIRECT))
                     })
     public void subscribeToQueueBlack(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + sampleRequestMessage + " from " + message.getMessageProperties().getConsumerQueue());
@@ -22,9 +22,9 @@ public class Subscriber {
     @RabbitHandler
     @RabbitListener(containerFactory = "simpleMessageListenerContainerFactory",
                     bindings = {
-                                    @QueueBinding(value = @Queue("queueWhite"),
-                                                    key = "white",
-                                                    exchange = @Exchange(value = "spring-boot-rabbitmq-examples.direct", type = ExchangeTypes.DIRECT))})
+                                    @QueueBinding(value = @Queue("${queue.white}"),
+                                                    key = "${routingKey.white}",
+                                                    exchange = @Exchange(value = "${exchange.direct}", type = ExchangeTypes.DIRECT))})
     public void subscribeToQueueWhite(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + sampleRequestMessage + " from " + message.getMessageProperties().getConsumerQueue());
     }

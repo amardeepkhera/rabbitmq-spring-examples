@@ -5,6 +5,7 @@ import in.rabbitmq.SampleResponseMessage;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.AsyncRabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.security.NoSuchAlgorithmException;
@@ -13,6 +14,8 @@ import java.security.SecureRandom;
 
 public class Publisher {
 
+    @Value("${routingKey.request}")
+    private String requestRoutingKey;
     @Autowired
     private DirectExchange directExchange;
 
@@ -38,7 +41,7 @@ public class Publisher {
         System.out.println("Sending out message on direct directExchange:" + sampleRequestMessage);
 
         AsyncRabbitTemplate.RabbitConverterFuture<SampleResponseMessage> sampleResponseMessageRabbitConverterFuture = asyncRabbitTemplate
-                        .convertSendAndReceive(directExchange.getName(), "rpc_request", sampleRequestMessage);
+                        .convertSendAndReceive(directExchange.getName(), requestRoutingKey, sampleRequestMessage);
         sampleResponseMessageRabbitConverterFuture.addCallback(
                         sampleResponseMessage ->
                                         System.out.println("Response for request message:" + sampleRequestMessage + " is:" + sampleResponseMessage)

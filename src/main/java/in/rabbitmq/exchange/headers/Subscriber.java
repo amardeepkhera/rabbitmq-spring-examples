@@ -15,7 +15,7 @@ public class Subscriber {
                                                     arguments = {
                                                                     @Argument(name = "nationality", value = "indian"),
                                                                     @Argument(name = "gender", value = "male")},
-                                                    exchange = @Exchange(value = "spring-boot-rabbitmq-examples.headers", type = ExchangeTypes.HEADERS)),
+                                                    exchange = @Exchange(value = "${exchange.headers}", type = ExchangeTypes.HEADERS)),
                     })
     public void subscribeToMessagesFromIndianMale(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + sampleRequestMessage + " from " + message.getMessageProperties().getConsumerQueue());
@@ -29,7 +29,7 @@ public class Subscriber {
                                                                     @Argument(name = "nationality", value = "american"),
                                                                     @Argument(name = "gender", value = "female"),
                                                                     @Argument(name = "x-match", value = "any")},
-                                                    exchange = @Exchange(value = "spring-boot-rabbitmq-examples.headers", type = ExchangeTypes.HEADERS))
+                                                    exchange = @Exchange(value = "${exchange.headers}", type = ExchangeTypes.HEADERS))
                     })
     public void subscribeToMessagesFromAmericanFemale(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + sampleRequestMessage + " from " + message.getMessageProperties().getConsumerQueue());

@@ -3,6 +3,7 @@ package in.rabbitmq.exchange.fanout;
 import in.rabbitmq.SampleRequestMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.security.NoSuchAlgorithmException;
@@ -21,6 +22,8 @@ public class Publisher {
         }
     }
 
+    @Value("${exchange.fanout}")
+    private String fanoutExchange;
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
@@ -29,7 +32,7 @@ public class Publisher {
     public void publishToFanoutExchange() {
         SampleRequestMessage sampleRequestMessage = new SampleRequestMessage(String.valueOf(SECURE_RANDOM.nextInt()));
         System.out.println("Sending out message on fanout directExchange:" + sampleRequestMessage);
-        rabbitTemplate.convertAndSend("spring-boot-rabbitmq-examples.fanout", "", sampleRequestMessage);
+        rabbitTemplate.convertAndSend(fanoutExchange, "", sampleRequestMessage);
     }
 
 

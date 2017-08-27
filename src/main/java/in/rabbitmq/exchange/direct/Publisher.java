@@ -3,6 +3,7 @@ package in.rabbitmq.exchange.direct;
 import in.rabbitmq.SampleRequestMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.security.NoSuchAlgorithmException;
@@ -21,6 +22,8 @@ public class Publisher {
         }
     }
 
+    @Value("${exchange.direct}")
+    private String directExchange;
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
@@ -29,6 +32,6 @@ public class Publisher {
         Integer integer = SECURE_RANDOM.nextInt();
         SampleRequestMessage sampleRequestMessage = new SampleRequestMessage(String.valueOf(integer));
         System.out.println("Sending out message on direct directExchange:" + sampleRequestMessage);
-        rabbitTemplate.convertAndSend("spring-boot-rabbitmq-examples.direct", integer % 2 == 0 ? "white" : "black", sampleRequestMessage);
+        rabbitTemplate.convertAndSend(directExchange, integer % 2 == 0 ? "white" : "black", sampleRequestMessage);
     }
 }

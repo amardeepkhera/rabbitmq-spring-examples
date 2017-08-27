@@ -1,0 +1,68 @@
+---
+spring:
+  profiles: async_rpc
+queue:
+  reply: replyQueueRPC
+  request: queueRPC
+exchange:
+  direct: spring-boot-rabbitmq-examples.async_rpc
+routingKey:
+  reply: rpc_reply
+  request: rpc_request
+---
+spring:
+  profiles: amqp_default
+queue:
+  requestQueueForConvertAndSend: requestQueueForConvertAndSend
+  requestQueueForConvertSendAndReceive: requestQueueForConvertSendAndReceive
+---
+spring:
+  profiles: direct
+queue:
+  black: queueBlack
+  white: queueWhite
+exchange:
+  direct: spring-boot-rabbitmq-examples.direct
+routingKey:
+  black: black
+  white: white
+---
+spring:
+  profiles: fanout
+queue:
+  A: queueA
+  B: queueB
+exchange:
+  fanout: spring-boot-rabbitmq-examples.fanout
+---
+spring:
+  profiles: topic
+queue:
+  countriesInNorthernHemisphere: countriesInNorthernHemisphere
+  countriesInSouthernHemisphere: countriesInSouthernHemisphere
+exchange:
+  topic: spring-boot-rabbitmq-examples.topic
+routingKey:
+  denmark: denmark.country.northern_hemisphere
+  australia: australia.country.southern_hemisphere
+  indonesia: indonesia.country.both
+binding:
+  northern_hemisphere: '*.country.northern_hemisphere'
+  southern_hemisphere: '*.country.southern_hemisphere'
+  both: '*.country.both'
+---
+spring:
+  profiles: headers
+queue:
+  indianAndMale: indianAndMale
+  americanAndFemale: americanAndFemale
+exchange:
+  headers: spring-boot-rabbitmq-examples.headers
+routingKey:
+  denmark: denmark.country.northern_hemisphere
+  australia: australia.country.southern_hemisphere
+  indonesia: indonesia.country.both
+binding:
+  northern_hemisphere: '*.country.northern_hemisphere'
+  southern_hemisphere: '*.country.southern_hemisphere'
+  both: '*.country.both'

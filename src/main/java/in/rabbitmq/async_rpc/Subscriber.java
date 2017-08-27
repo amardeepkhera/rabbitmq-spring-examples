@@ -12,9 +12,9 @@ public class Subscriber {
     @RabbitHandler
     @RabbitListener(
                     bindings = {
-                                    @QueueBinding(value = @Queue("queueRPC"),
-                                                    key = "rpc_request",
-                                                    exchange = @Exchange(value = "spring-boot-rabbitmq-examples.async_rpc", type = ExchangeTypes.DIRECT, durable = "true"))})
+                                    @QueueBinding(value = @Queue("${queue.request}"),
+                                                    key = "${routingKey.request}",
+                                                    exchange = @Exchange(value = "${exchange.direct}", type = ExchangeTypes.DIRECT, durable = "true"))})
     public SampleResponseMessage subscribeToQueueRed(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + message);
         return new SampleResponseMessage(sampleRequestMessage.getMessage());
