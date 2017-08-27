@@ -3,7 +3,7 @@ This project contains examples for using Spring-Boot with RabbitMQ.
 <br/>The examples are Spring-Boot implementation of various concepts and tutorial covered on [RabbitMQ Official Website](https://www.rabbitmq.com/getstarted.html)
 
 ## Structure
-Each example is contained is a self contained package.<br>For instance ,example demonstrating messaging using topic exchange type is contained inside ```in.rabbitmq.exchange.topic```.<br/>Similarly example demonstrating messaging using async RPC is contained inside ```in.rabbitmq.async_rpc```.
+Each example is a self contained package.<br>For instance ,example demonstrating messaging using topic exchange type is contained inside ```in.rabbitmq.exchange.topic```.<br/>Similarly example demonstrating messaging using async RPC is contained inside ```in.rabbitmq.async_rpc```.
 
 ### Build
 ```git clone ...```<br/>
