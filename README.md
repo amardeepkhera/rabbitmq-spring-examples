@@ -9,7 +9,7 @@ Each example is contained is a self contained package.<br>For instance ,example 
 ```git clone ...```<br/>
 ``` mvn clean install```
 ### Run
-You should have Java 8 and RabbitMQ 3.6.6 or above.And RabbitMQ should be running on localhost:5672<br/>
+You should have Java 8 and RabbitMQ 3.6.6 or above.RabbitMQ should be running on localhost:5672<br/>
 You can run it as an executubale jar<br/> ```java -jar -Dspring.profiles.active=direct rabbitmq-spring-examples.jar```
 ### Spring Profiles
 Each example can be run by specifying a profile , for instance to run an example demonstrating messaging using fanout exchange types , use following command.<br/>
