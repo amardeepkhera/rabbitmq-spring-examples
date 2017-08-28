@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Configuration("asyncRPCConfig")
@@ -42,10 +43,15 @@ public class Config {
     }
 
     @Bean
+    public Executor taskExecutor() {
+        return Executors.newCachedThreadPool();
+    }
+
+    @Bean
     public SimpleRabbitListenerContainerFactory simpleMessageListenerContainerFactory(ConnectionFactory connectionFactory,
                                                                                       SimpleRabbitListenerContainerFactoryConfigurer configurer) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-
+        factory.setTaskExecutor(taskExecutor());
         configurer.configure(factory, connectionFactory);
         return factory;
     }
@@ -72,7 +78,7 @@ public class Config {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         simpleMessageListenerContainer.setQueues(replyQueueRPC());
         simpleMessageListenerContainer.setReceiveTimeout(2000);
-        simpleMessageListenerContainer.setTaskExecutor(Executors.newCachedThreadPool());
+        simpleMessageListenerContainer.setTaskExecutor(taskExecutor());
         return simpleMessageListenerContainer;
     }
 
@@ -80,9 +86,11 @@ public class Config {
     @Bean
     public AsyncRabbitTemplate asyncRabbitTemplate(ConnectionFactory connectionFactory) {
 
-        return new AsyncRabbitTemplate(rabbitTemplate(connectionFactory),
+        AsyncRabbitTemplate asyncRabbitTemplate = new AsyncRabbitTemplate(rabbitTemplate(connectionFactory),
                         rpcReplyMessageListenerContainer(connectionFactory),
                         directExchange + "/" + replyRoutingKey);
+        asyncRabbitTemplate.setEnableConfirms(true);
+        return asyncRabbitTemplate;
     }
 
     @Bean
