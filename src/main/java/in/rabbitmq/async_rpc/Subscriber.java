@@ -10,13 +10,14 @@ import org.springframework.messaging.handler.annotation.Payload;
 public class Subscriber {
 
     @RabbitHandler
-    @RabbitListener(
+    @RabbitListener(containerFactory = "simpleMessageListenerContainerFactory",
                     bindings = {
                                     @QueueBinding(value = @Queue("${queue.request}"),
                                                     key = "${routingKey.request}",
                                                     exchange = @Exchange(value = "${exchange.direct}", type = ExchangeTypes.DIRECT, durable = "true"))})
     public SampleResponseMessage subscribeToRequestQueue(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + message);
+
         return new SampleResponseMessage(sampleRequestMessage.getMessage());
     }
 }
