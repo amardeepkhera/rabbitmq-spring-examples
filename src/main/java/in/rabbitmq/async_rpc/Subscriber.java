@@ -15,7 +15,7 @@ public class Subscriber {
                                     @QueueBinding(value = @Queue("${queue.request}"),
                                                     key = "${routingKey.request}",
                                                     exchange = @Exchange(value = "${exchange.direct}", type = ExchangeTypes.DIRECT, durable = "true"))})
-    public SampleResponseMessage subscribeToQueueRed(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
+    public SampleResponseMessage subscribeToRequestQueue(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + message);
         return new SampleResponseMessage(sampleRequestMessage.getMessage());
     }
