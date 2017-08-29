@@ -24,3 +24,10 @@ Each example can be run by specifying a profile , for instance to run an example
 - topic
 - headers
 - async_rpc
+- clustered
+
+### Clustering
+To run RabbitMQ in cluster , you can run the `docker-compose.yml` present at project root.<br/>
+
+    docker-compose up
+
