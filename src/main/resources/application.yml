@@ -66,3 +66,14 @@ binding:
   northern_hemisphere: '*.country.northern_hemisphere'
   southern_hemisphere: '*.country.southern_hemisphere'
   both: '*.country.both'
+---
+spring:
+  profiles: clustered
+queue:
+  reply: replyQueueRPC
+  request: queueRPC
+exchange:
+  direct: spring-boot-rabbitmq-examples.async_rpc
+routingKey:
+  reply: rpc_reply
+  request: rpc_request

@@ -1,5 +1,6 @@
-package in.rabbitmq.async_rpc;
+package in.rabbitmq.clustered;
 
+import in.rabbitmq.async_rpc.Subscriber;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -7,6 +8,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.AsyncRabbitTemplate;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -25,13 +27,12 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-@Configuration("asyncRPCConfig")
-@Profile("async_rpc")
+@Configuration("clusteredConfig")
+@Profile("clustered")
 @EnableScheduling
 @EnableRabbit
-@ComponentScan(basePackages = {"in.rabbitmq.async_rpc"})
+@ComponentScan(basePackages = {"in.rabbitmq.clustered"})
 public class Config {
-
     @Value("${queue.request}")
     private String requestQueue;
     @Value("${queue.reply}")
@@ -44,8 +45,18 @@ public class Config {
     private String replyRoutingKey;
 
     @Bean
-    public Publisher publisher() {
-        return new Publisher();
+    public ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setUsername("guest");
+        connectionFactory.setPassword("guest");
+        connectionFactory.setAddresses("localhost:5672,localhost:5673,localhost:5674");
+        return connectionFactory;
+    }
+
+
+    @Bean
+    public in.rabbitmq.async_rpc.Publisher publisher() {
+        return new in.rabbitmq.async_rpc.Publisher();
     }
 
     @Bean
@@ -115,7 +126,7 @@ public class Config {
     }
 
     @Bean
-    public Subscriber subscriber() {
+    public in.rabbitmq.async_rpc.Subscriber subscriber() {
         return new Subscriber();
     }
 
