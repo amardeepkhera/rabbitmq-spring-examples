@@ -88,7 +88,6 @@ public class Config {
     public SimpleMessageListenerContainer rpcReplyMessageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         simpleMessageListenerContainer.setQueues(replyQueueRPC());
-        simpleMessageListenerContainer.setReceiveTimeout(2000);
         simpleMessageListenerContainer.setTaskExecutor(taskExecutor());
         return simpleMessageListenerContainer;
     }
@@ -100,7 +99,6 @@ public class Config {
         AsyncRabbitTemplate asyncRabbitTemplate = new AsyncRabbitTemplate(rabbitTemplate(connectionFactory),
                         rpcReplyMessageListenerContainer(connectionFactory),
                         directExchange + "/" + replyRoutingKey);
-        asyncRabbitTemplate.setEnableConfirms(true);
         return asyncRabbitTemplate;
     }
 

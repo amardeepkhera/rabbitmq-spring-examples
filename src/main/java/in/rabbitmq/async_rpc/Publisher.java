@@ -42,6 +42,7 @@ public class Publisher {
 
         AsyncRabbitTemplate.RabbitConverterFuture<SampleResponseMessage> sampleResponseMessageRabbitConverterFuture = asyncRabbitTemplate
                         .convertSendAndReceive(directExchange.getName(), requestRoutingKey, sampleRequestMessage);
+       
         sampleResponseMessageRabbitConverterFuture.addCallback(
                         sampleResponseMessage ->
                                         System.out.println("Response for request message:" + sampleRequestMessage + " is:" + sampleResponseMessage)
