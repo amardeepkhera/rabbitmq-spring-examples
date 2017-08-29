@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -30,10 +32,14 @@ import java.util.concurrent.Executors;
 @ComponentScan(basePackages = {"in.rabbitmq.async_rpc"})
 public class Config {
 
+    @Value("${queue.request}")
+    private String requestQueue;
     @Value("${queue.reply}")
     private String replyQueue;
     @Value("${exchange.direct}")
     private String directExchange;
+    @Value("${routingKey.request}")
+    private String requestRoutingKey;
     @Value("${routingKey.reply}")
     private String replyRoutingKey;
 
@@ -74,6 +80,11 @@ public class Config {
     }
 
     @Bean
+    public Queue requestQueueRPC() {
+        return new Queue(requestQueue);
+    }
+
+    @Bean
     public SimpleMessageListenerContainer rpcReplyMessageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
         simpleMessageListenerContainer.setQueues(replyQueueRPC());
@@ -99,7 +110,14 @@ public class Config {
     }
 
     @Bean
-    public Binding binding() {
+    public List<Binding> requestQueueBinding() {
+        return Arrays.asList(
+                        BindingBuilder.bind(requestQueueRPC()).to(directExchange()).with(requestRoutingKey),
+                        BindingBuilder.bind(replyQueueRPC()).to(directExchange()).with(replyRoutingKey));
+    }
+
+    @Bean
+    public Binding replyQueueBinding() {
         return BindingBuilder.bind(replyQueueRPC()).to(directExchange()).with(replyRoutingKey);
     }
 

@@ -2,19 +2,15 @@ package in.rabbitmq.async_rpc;
 
 import in.rabbitmq.SampleRequestMessage;
 import in.rabbitmq.SampleResponseMessage;
-import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.*;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Payload;
 
 public class Subscriber {
 
     @RabbitHandler
-    @RabbitListener(containerFactory = "simpleMessageListenerContainerFactory",
-                    bindings = {
-                                    @QueueBinding(value = @Queue("${queue.request}"),
-                                                    key = "${routingKey.request}",
-                                                    exchange = @Exchange(value = "${exchange.direct}", type = ExchangeTypes.DIRECT, durable = "true"))})
+    @RabbitListener(containerFactory = "simpleMessageListenerContainerFactory", queues = "${queue.request}")
     public SampleResponseMessage subscribeToRequestQueue(@Payload SampleRequestMessage sampleRequestMessage, Message message) {
         System.out.println("Received message :" + message);
 
